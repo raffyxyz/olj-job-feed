@@ -66,6 +66,7 @@ export const parseJobPosts = (htmlContent: string) => {
       description: description,
       tags: tags,
       employmentType: employmentType,
+      createdAt: new Date(),
     };
 
     jobs.push(jobData);
