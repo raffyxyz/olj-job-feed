@@ -1,34 +1,8 @@
+"use server";
+
+import { Job, JobDocumentData } from "@/lib/types";
 import db from "@/utils/firebase";
-import {
-  DocumentData,
-  QueryDocumentSnapshot,
-  Timestamp,
-} from "firebase-admin/firestore";
-
-interface Job {
-  id: string;
-  createdAt: Timestamp;
-  description: string;
-  employmentType: string;
-  postedDate: string;
-  posterName: string;
-  salary: string;
-  tags: string[];
-  title: string;
-  url: string;
-}
-
-interface JobDocumentData {
-  createdAt: Timestamp;
-  description: string;
-  employmentType: string;
-  postedDate: string;
-  posterName: string;
-  salary: string;
-  tags: string[];
-  title: string;
-  url: string;
-}
+import { DocumentData, QueryDocumentSnapshot } from "firebase-admin/firestore";
 
 // Helper function to convert Firestore document to Job object
 function documentToJob(doc: QueryDocumentSnapshot<DocumentData>): Job {
@@ -64,7 +38,7 @@ const getJobPosts = async (): Promise<Job[]> => {
     jobs.push(documentToJob(doc));
   });
 
-  return jobs;
+  return JSON.parse(JSON.stringify(jobs));
 };
 
 export { getJobPosts };
