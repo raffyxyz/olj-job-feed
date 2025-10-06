@@ -6,6 +6,24 @@ export function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+export function formatDate(date: Date) {
+  const formatted = date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  });
+  return formatted;
+}
+
+export function getDateYesterday() {
+  const today = new Date();
+  const yesterday = new Date(today);
+
+  yesterday.setDate(today.getDate() - 1);
+
+  return formatDate(yesterday);
+}
+
 export function getOnlyTodayJobs(jobs: JobType[]) {
   const yesterdayDate = "Jul 28, 2025";
 
@@ -30,26 +48,6 @@ export function getOnlyTodayJobs(jobs: JobType[]) {
 
   // No cutoff point found, return all jobs
   return jobs;
-}
-
-export function checkJobDate(jobs: JobType[]): JobPostDate {
-  const oldJobs = jobs.filter((job) => job.postedDate === "Jul 28, 2025");
-
-  if (oldJobs.length === jobs.length) {
-    return "all-old";
-  }
-
-  if (oldJobs.length < jobs.length && oldJobs.length !== 0) {
-    return "had-old";
-  }
-
-  return "all-new";
-}
-
-export function getOnlyTheNewJobs(jobs: JobType[]): JobType[] {
-  const newJobs = jobs.filter((job) => job.postedDate === "Jul 29, 2025");
-
-  return newJobs;
 }
 
 export function checkLastJobFound(jobs: JobType[], title: string) {
