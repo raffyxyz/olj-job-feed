@@ -1,10 +1,14 @@
 import { saveJobPosts } from "@/lib/api/firestore";
 import { getJobPosts } from "@/lib/api/firestore/get-job-posts";
 import { parseJobPosts, JobType } from "@/lib/parser";
+import { getRandomHeaders } from "@/utils/headers";
 import { delay, checkLastJobFound, getDateYesterday } from "@/utils/helper";
-import { checkJobDate } from "@/utils/jobs";
-
-// export const dynamic = "force-static";
+import {
+  checkJobDate,
+  getOnlyTodayJobs,
+  getOnlyTodayJobsV1,
+} from "@/utils/jobs";
+import axios from "axios";
 
 const BASE_URL = "https://www.onlinejobs.ph/jobseekers/jobsearch";
 let START_PAGE = 0;
@@ -14,16 +18,40 @@ export async function GET() {
     let lastJobIndex: number = -1;
     const jobs: JobType[] = [];
 
-    do {
-      const response = await fetch(`${BASE_URL}/${START_PAGE}`);
-      const result = await response.text();
+    let proceed = false;
+    const headers = getRandomHeaders();
 
-      const jobPosts: JobType[] = parseJobPosts(result);
+    do {
+      const response = await axios.get(`${BASE_URL}/${START_PAGE}`, {
+        headers,
+      });
+
+      await delay(1000);
+
+      const jobPosts: JobType[] = parseJobPosts(response.data);
 
       const jobDate = checkJobDate(jobPosts);
 
-      return Response.json({ date: jobDate });
-    } while (false);
+      // All new proceed to the next page.
+      if (jobDate === "all-new") {
+        jobs.push(...jobPosts);
+        START_PAGE += 30;
+        proceed = true;
+      }
+      // Had old get only the new job post.
+      if (jobDate === "had-old") {
+        const newPostingOnly = getOnlyTodayJobsV1(jobPosts);
+        jobs.push(...newPostingOnly);
+        START_PAGE += 30;
+        proceed = true;
+      }
+      // All Old end to process.
+      if (jobDate === "all-old") proceed = false;
+
+      await delay(3000);
+    } while (proceed);
+
+    return Response.json({ jobs });
 
     // do {
     //   // Get the last job from firebase.
