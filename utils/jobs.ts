@@ -1,8 +1,9 @@
 import { JobType } from "@/lib/parser";
-import { getDateYesterday } from "./helper";
+import { getDateYesterday, formatDate } from "./helper";
 
 type JobPostDate = "had-old" | "all-new" | "all-old";
 
+// Checks if a scanned job posting are all new, all old or had old.
 export function checkJobDate(jobs: JobType[]): JobPostDate {
   const yesterdayDate = getDateYesterday();
 
@@ -17,4 +18,11 @@ export function checkJobDate(jobs: JobType[]): JobPostDate {
   }
 
   return "all-new";
+}
+
+// Get only the job post that have date today.
+export function getOnlyTodayJobs(jobs: JobType[]) {
+  const today = formatDate(new Date());
+
+  return jobs.filter((item) => item.postedDate === today);
 }
