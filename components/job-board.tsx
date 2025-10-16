@@ -26,10 +26,28 @@ import {
   IconMoonStars,
   IconSearch,
   IconSun,
+  IconX,
 } from "@tabler/icons-react";
+import { useState } from "react";
+import JobTitleFilter from "./job-title-filter";
 
 const JobBoard = ({ data }: { data: JobDocumentData[] | undefined }) => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+
+  const [filterInput, setFilterInput] = useState<string>("");
+  const [filters, setFilters] = useState<string[]>([]);
+
+  const addFilter = () => {
+    const trimmed = filterInput.trim();
+    if (trimmed && !filters.includes(trimmed)) {
+      setFilters([...filters, trimmed]);
+      setFilterInput("");
+    }
+  };
+
+  const removeFilter = (filterToRemove: string) => {
+    setFilters(filters.filter((f) => f !== filterToRemove));
+  };
 
   function tagIsEmpty(tags: string[]) {
     return tags.length === 1 && tags[0] === "";
@@ -71,16 +89,25 @@ const JobBoard = ({ data }: { data: JobDocumentData[] | undefined }) => {
         </Menu>
       </Group>
       <Group justify="space-between" mt={40} align="end">
-        <TextInput
-          label="Job Title"
-          placeholder="Search for a job title"
-          leftSection={<IconSearch size={16} />}
-          aria-label="Search job title"
-        />
+        <JobTitleFilter addFilter={addFilter} />
         <Text size="sm" c="dimmed">
           {data?.length} job post available.
         </Text>
       </Group>
+      {filters.length > 0 && (
+        <Flex mt="sm" gap="xs">
+          <Text>Active Filters: </Text>
+          {filters.map((filter, idx) => (
+            <Badge
+              key={idx}
+              variant="outline"
+              rightSection={<IconX size={12} />}
+            >
+              {filter}
+            </Badge>
+          ))}
+        </Flex>
+      )}
 
       <Grid mt={30}>
         {data?.map((job, index) => (
