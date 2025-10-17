@@ -27,8 +27,6 @@ export async function GET() {
         console.log(response.data);
       }
 
-      await delay(1000);
-
       const jobPosts: JobType[] = parseJobPosts(response.data);
 
       const jobDate = checkJobDate(jobPosts);
@@ -49,11 +47,15 @@ export async function GET() {
       // All Old end to process.
       if (jobDate === "all-old") proceed = false;
 
-      await delay(3000);
+      await delay(1000);
     } while (proceed);
 
     return Response.json({ jobs });
-  } catch (err: any) {
-    throw new Error(err);
+  } catch (err) {
+    if (err instanceof Error) {
+      console.log(err.message);
+    } else {
+      console.log("Unknown error:", err);
+    }
   }
 }
