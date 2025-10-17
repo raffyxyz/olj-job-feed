@@ -4,12 +4,21 @@ import { Button, Flex, TextInput } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 
-type JobTitleFilterProps = {
-  addFilter: () => void;
+type Props = {
+  filters: string[];
+  setFilters: (filters: string[]) => void;
 };
 
-const JobTitleFilter: React.FC<JobTitleFilterProps> = ({ addFilter }) => {
-  const [filterInput, setFilterInput] = useState<string>("");
+export const JobTitleFilter = ({ filters, setFilters }: Props) => {
+  const [filterInput, setFilterInput] = useState("");
+
+  const addFilter = () => {
+    const trimmed = filterInput.trim();
+    if (trimmed && !filters.includes(trimmed)) {
+      setFilters([...filters, trimmed]);
+      setFilterInput("");
+    }
+  };
 
   return (
     <Flex justify="flex-start" align="end" gap="xs" direction="row" wrap="wrap">
@@ -18,6 +27,7 @@ const JobTitleFilter: React.FC<JobTitleFilterProps> = ({ addFilter }) => {
         placeholder="Enter job title keyword (e.g., Developer, Accountant, Editor)"
         value={filterInput}
         onChange={(e) => setFilterInput(e.target.value)}
+        onKeyPress={(e) => e.key === "Enter" && addFilter()}
         leftSection={<IconSearch size={16} />}
         aria-label="Filter job title"
       />
@@ -25,5 +35,3 @@ const JobTitleFilter: React.FC<JobTitleFilterProps> = ({ addFilter }) => {
     </Flex>
   );
 };
-
-export default JobTitleFilter;
