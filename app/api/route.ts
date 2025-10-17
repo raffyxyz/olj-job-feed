@@ -51,7 +51,11 @@ export async function GET() {
     } while (proceed);
 
     return Response.json({ jobs });
-  } catch (err: any) {
-    throw new Error(err);
+  } catch (err) {
+    if (err instanceof Error) {
+      console.log(err.message);
+    } else {
+      console.log("Unknown error:", err);
+    }
   }
 }
