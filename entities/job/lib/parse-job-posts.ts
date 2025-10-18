@@ -1,16 +1,5 @@
 import * as cheerio from "cheerio";
-import { Timestamp } from "firebase-admin/firestore";
-
-export type JobType = {
-  title: string;
-  url: string | undefined;
-  posterName: string;
-  postedDate: string;
-  salary: string;
-  description: string;
-  tags: string[];
-  employmentType: string;
-};
+import { JobType } from "@/shared/types";
 
 export const parseJobPosts = (htmlContent: string) => {
   const jobs: JobType[] = [];
@@ -67,7 +56,7 @@ export const parseJobPosts = (htmlContent: string) => {
       description: description,
       tags: tags,
       employmentType: employmentType,
-      createdAt: Timestamp.now(),
+      createdAt: Date.now(),
     };
 
     jobs.push(jobData);

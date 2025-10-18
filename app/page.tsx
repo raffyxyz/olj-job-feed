@@ -1,5 +1,7 @@
-import { Button } from "@mantine/core";
+import { JobBoard } from "@/screens/job-board";
 
-export default function Home() {
-  return <Button variant="filled">Hello World</Button>;
-}
+const Page = async () => {
+  return <JobBoard />;
+};
+
+export default Page;

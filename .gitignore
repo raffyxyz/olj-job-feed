@@ -31,7 +31,7 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
+.env
 
 # vercel
 .vercel
@@ -42,3 +42,11 @@ next-env.d.ts
 
 # keys
 olj-app-keys.json
+
+# jest
+coverage/
+jest-test-results.json
+*.test.js.snap
+*.test.ts.snap
+*.spec.js.snap
+*.spec.ts.snap
