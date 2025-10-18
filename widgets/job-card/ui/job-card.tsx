@@ -13,7 +13,7 @@ type Props = {
   employmentType: string;
   salary: string | number;
   tags: string[];
-  url: string;
+  url: string | undefined;
 };
 
 export const JobCard = ({

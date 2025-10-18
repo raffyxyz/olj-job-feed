@@ -1,28 +1,13 @@
-import { Timestamp } from "firebase-admin/firestore";
-
-interface Job {
-  id: string;
-  createdAt: Timestamp;
-  description: string;
-  employmentType: string;
-  postedDate: string;
-  posterName: string;
-  salary: string;
-  tags: string[];
+interface JobType {
   title: string;
-  url: string;
+  url: string | undefined;
+  posterName: string;
+  postedDate: string;
+  salary: string | number;
+  description: string;
+  tags: string[];
+  employmentType: string;
+  createdAt: number;
 }
 
-interface JobDocumentData {
-  createdAt: Timestamp;
-  description: string;
-  employmentType: string;
-  postedDate: string;
-  posterName: string;
-  salary: string;
-  tags: string[];
-  title: string;
-  url: string;
-}
-
-export type { Job, JobDocumentData };
+export type { JobType };
