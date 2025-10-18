@@ -12,8 +12,8 @@ import {
 import { QueryProvider } from "./providers/QueryProvider";
 
 export const metadata = {
-  title: "OLJ App",
-  description: "I have followed setup instructions carefully",
+  title: "Online Jobs Ph App",
+  description: "Browse jobs easily.",
 };
 
 const theme = createTheme({
