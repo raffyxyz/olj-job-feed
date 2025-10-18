@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@mantine/core";
+import { Tooltip, ActionIcon } from "@mantine/core";
 import { IconRefresh } from "@tabler/icons-react";
 
 export const RefreshJobsButton = () => {
@@ -8,12 +8,10 @@ export const RefreshJobsButton = () => {
     window.location.reload();
   };
   return (
-    <Button
-      color="green"
-      rightSection={<IconRefresh size={16} />}
-      onClick={handleRefreshJobs}
-    >
-      Refresh Jobs
-    </Button>
+    <Tooltip label="Refresh Jobs" withArrow>
+      <ActionIcon variant="default" size="lg" onClick={handleRefreshJobs}>
+        <IconRefresh size={16} />
+      </ActionIcon>
+    </Tooltip>
   );
 };
