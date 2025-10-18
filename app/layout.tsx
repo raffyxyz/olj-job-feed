@@ -9,6 +9,7 @@ import {
   createTheme,
   mantineHtmlProps,
 } from "@mantine/core";
+import { QueryProvider } from "./providers/QueryProvider";
 
 export const metadata = {
   title: "OLJ App",
@@ -45,7 +46,9 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <QueryProvider>
+          <MantineProvider theme={theme}>{children}</MantineProvider>
+        </QueryProvider>
       </body>
     </html>
   );
