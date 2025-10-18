@@ -1,7 +1,8 @@
-import { parseJobPosts, JobType } from "@/lib/parser";
-import { getRandomHeaders } from "@/utils/headers";
-import { delay } from "@/utils/helper";
-import { checkJobDate, getOnlyTodayJobs } from "@/utils/jobs";
+import { getRandomHeaders } from "@/entities/axios";
+import { checkJobDate, getOnlyTodayJobs, parseJobPosts } from "@/entities/job";
+import { delay } from "@/shared/lib/delay";
+import { JobType } from "@/shared/types";
+
 import axios from "axios";
 
 const BASE_URL = "https://www.onlinejobs.ph/jobseekers/jobsearch";

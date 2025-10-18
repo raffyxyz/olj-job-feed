@@ -1,9 +1,6 @@
-import { JobDocumentData } from "@/shared/types";
+import { JobType } from "@/shared/types";
 
-export const FilterByTitle = (
-  jobs: JobDocumentData[],
-  filterKeywords: string[]
-) => {
+export const FilterByTitle = (jobs: JobType[], filterKeywords: string[]) => {
   if (!filterKeywords || filterKeywords.length === 0) return jobs;
 
   const keywords = filterKeywords.map((k) => k.toLowerCase().trim());

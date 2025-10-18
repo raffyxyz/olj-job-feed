@@ -1,14 +1,14 @@
 "use client";
 
 import { FilterByTitle } from "@/entities/job";
-import { JobDocumentData } from "@/shared/types";
+import { JobType } from "@/shared/types";
 import { JobBoardHeader } from "@/widgets/header";
 import { JobCard } from "@/widgets/job-card";
 import { JobFiltersPanel } from "@/widgets/job-filters-panel";
 import { Container, Grid } from "@mantine/core";
 import { useMemo, useState } from "react";
 
-export const JobBoard = ({ data }: { data: JobDocumentData[] }) => {
+export const JobBoard = ({ data }: { data: JobType[] }) => {
   const [filters, setFilters] = useState<string[]>([]);
 
   const filteredJobs = useMemo(() => FilterByTitle(data, filters), [filters]);
