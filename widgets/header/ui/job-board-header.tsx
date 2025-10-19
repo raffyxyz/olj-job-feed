@@ -2,23 +2,26 @@
 
 import {
   ActionIcon,
+  em,
   Group,
   Menu,
   Title,
   useMantineColorScheme,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { IconMenu2, IconMoonStars, IconSun } from "@tabler/icons-react";
 
 export const JobBoardHeader = () => {
+  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   return (
     <Group justify="space-between">
-      <Title order={1}>Browse Job Posting Today</Title>
+      <Title order={isMobile ? 4 : 1}>Browse Job Posting Today</Title>
       <Menu
         width={200}
         shadow="md"
-        trigger="hover"
+        trigger="click"
         openDelay={100}
         closeDelay={400}
         position="bottom-end"

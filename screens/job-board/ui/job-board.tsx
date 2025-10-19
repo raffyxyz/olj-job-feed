@@ -29,12 +29,12 @@ export const JobBoard = () => {
       <Grid mt={30}>
         {isLoading
           ? Array.from({ length: 6 }).map((_, index) => (
-              <Grid.Col span={4} key={index}>
+              <Grid.Col span={{ base: 12, xs: 6, md: 4 }} key={index}>
                 <JobCardSkeleton />
               </Grid.Col>
             ))
           : filteredJobs?.map((job, index) => (
-              <Grid.Col span={4} key={index}>
+              <Grid.Col span={{ base: 12, xs: 6, md: 4 }} key={index}>
                 <JobCard {...job} />
               </Grid.Col>
             ))}
