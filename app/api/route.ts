@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
       await delay(1000);
     } while (proceed);
 
-    return Response.json({ jobs });
+    return NextResponse.json({ jobs });
   } catch (err) {
     if (err instanceof Error) {
       console.log(err.message);
