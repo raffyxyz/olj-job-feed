@@ -1,4 +1,4 @@
-# OLJ APP
+# OLJPH APP
 
 An onlinejobs.ph web app that scrapes job posting on the job board.
 
