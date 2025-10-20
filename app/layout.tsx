@@ -9,19 +9,28 @@ import {
   createTheme,
   mantineHtmlProps,
 } from "@mantine/core";
+import { Arimo } from "next/font/google";
 import { QueryProvider } from "./providers/QueryProvider";
 
 export const metadata = {
-  title: "Online Jobs Ph App",
+  title: "OnlineJobsPh App",
   description: "Browse jobs easily.",
 };
 
+const arimo = Arimo({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"], // Specify the weights you need
+  style: ["normal", "italic"],
+  display: "swap", // Font display strategy
+  variable: "--font-arimo", // CSS variable name
+});
+
 const theme = createTheme({
-  fontFamily: "Arimo, sans-serif",
+  fontFamily: `var(--font-arimo), ${DEFAULT_THEME.fontFamily}`,
   fontFamilyMonospace: "Monaco, Courier, monospace",
   headings: {
     // Use default theme if you want to provide default Mantine fonts as a fallback
-    fontFamily: `Arimo, ${DEFAULT_THEME.fontFamily}`,
+    fontFamily: `var(--font-arimo), ${DEFAULT_THEME.fontFamily}`,
   },
 });
 
@@ -31,18 +40,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" {...mantineHtmlProps}>
+    <html lang="en" {...mantineHtmlProps} className={arimo.variable}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin=""
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
-          rel="stylesheet"
-        />
         <ColorSchemeScript />
       </head>
       <body>

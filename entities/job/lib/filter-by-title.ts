@@ -5,7 +5,7 @@ export const FilterByTitle = (jobs: JobType[], filterKeywords: string[]) => {
 
   const keywords = filterKeywords.map((k) => k.toLowerCase().trim());
 
-  return jobs.filter((job) => {
+  return jobs?.filter((job) => {
     const titleText = job.title.toLowerCase();
 
     return keywords.some((keyword) => titleText.includes(keyword));

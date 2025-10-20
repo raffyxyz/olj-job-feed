@@ -35,7 +35,11 @@ export const JobFiltersPanel = ({ total, filters, setFilters }: Props) => {
               key={idx}
               variant="outline"
               rightSection={
-                <IconX size={14} onClick={() => removeFilter(filter)} />
+                <IconX
+                  size={14}
+                  onClick={() => removeFilter(filter)}
+                  style={{ cursor: "pointer" }}
+                />
               }
             >
               {filter}
