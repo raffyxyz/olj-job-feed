@@ -1,5 +1,6 @@
 // api
 export { jobApi } from "./api/job-api";
+export { fetchJobs } from "./api/fetch-jobs";
 
 // lib
 export { FilterByTitle } from "./lib/filter-by-title";
