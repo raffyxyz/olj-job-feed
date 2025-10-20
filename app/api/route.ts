@@ -4,10 +4,17 @@ import { delay } from "@/shared/lib/delay";
 import { JobType } from "@/shared/types";
 
 import axios from "axios";
+import { NextRequest, NextResponse } from "next/server";
 
 const BASE_URL = "https://www.onlinejobs.ph/jobseekers/jobsearch";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  if (
+    request.headers.get("Authorization") !== `Bearer ${process.env.API_KEY}`
+  ) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   let START_PAGE = 0;
 
   const jobs: JobType[] = [];
