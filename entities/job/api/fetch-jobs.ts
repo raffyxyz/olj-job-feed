@@ -3,6 +3,7 @@
 import { JobType } from "@/shared/types";
 
 export async function fetchJobs(): Promise<JobType[]> {
+  console.log("API_ENDPOINT: ", process.env.API_ENDPOINT);
   const response = await fetch(`${process.env.API_ENDPOINT}/api`, {
     method: "GET",
     headers: {
