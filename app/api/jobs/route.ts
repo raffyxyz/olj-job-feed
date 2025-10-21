@@ -2,18 +2,22 @@ import { getRandomHeaders } from "@/entities/axios";
 import { checkJobDate, getOnlyTodayJobs, parseJobPosts } from "@/entities/job";
 import { delay } from "@/shared/lib/delay";
 import { JobType } from "@/shared/types";
+import { getAllowedOrigins } from "@/shared/lib/get-allowed-origins";
 
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
+import { corsCheck } from "@/shared/lib/cors-check";
 
 const BASE_URL = "https://www.onlinejobs.ph/jobseekers/jobsearch";
 
 export async function GET(request: NextRequest) {
-  if (
-    request.headers.get("Authorization") !==
-    `Bearer ${process.env.BEARER_TOKEN}`
-  ) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { allowed, origin } = corsCheck(request);
+
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Access forbidden: Invalid origin" },
+      { status: 403 }
+    );
   }
 
   let START_PAGE = 0;
@@ -59,12 +63,47 @@ export async function GET(request: NextRequest) {
       await delay(1000);
     } while (proceed);
 
-    return NextResponse.json({ jobs });
+    return NextResponse.json({
+      status: 200,
+      headers: origin
+        ? {
+            "Access-Control-Allow-Origin": origin,
+            "Access-Control-Allow-Methods": "GET",
+            "Access-Control-Allow-Credentials": "true",
+          }
+        : {},
+      jobs,
+    });
   } catch (err) {
-    if (err instanceof Error) {
-      console.log(err.message);
-    } else {
-      console.log("Unknown error:", err);
-    }
+    console.error("Error fetching jobs:", err);
+    return NextResponse.json(
+      { error: "Failed to fetch jobs" },
+      {
+        status: 500,
+        headers: origin
+          ? {
+              "Access-Control-Allow-Origin": origin,
+            }
+          : {},
+      }
+    );
   }
+}
+
+export async function OPTIONS(request: NextRequest) {
+  const { allowed, origin } = corsCheck(request);
+
+  if (!allowed || !origin) {
+    return new NextResponse(null, { status: 403 });
+  }
+
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      "Access-Control-Allow-Origin": origin,
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Max-Age": "86400", // 24 hours
+    },
+  });
 }
