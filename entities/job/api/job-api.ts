@@ -6,14 +6,11 @@ export const jobApi = {
       `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api`,
       {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
-        },
       }
     );
 
-    const data = await response.json();
+    const jobs = await response.json();
 
-    return data.jobs;
+    return jobs;
   },
 };
