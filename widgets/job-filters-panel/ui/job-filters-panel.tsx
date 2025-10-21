@@ -2,7 +2,7 @@
 
 import { JobTitleFilter } from "@/features/job-title-filter";
 import { RefreshJobsButton } from "@/features/refresh-jobs";
-import { Badge, Button, Flex, Group, Text } from "@mantine/core";
+import { Badge, Button, Flex, Group, Text, useMatches } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
 
 type Props = {
@@ -16,6 +16,12 @@ export const JobFiltersPanel = ({ total, filters, setFilters }: Props) => {
     setFilters(filters.filter((f) => f !== filterToRemove));
   };
 
+  const badgeSize = useMatches({
+    base: "xs",
+    sm: "sm",
+    md: "md",
+  });
+
   return (
     <>
       <Group justify="space-between" mt={40} align="end">
@@ -28,11 +34,12 @@ export const JobFiltersPanel = ({ total, filters, setFilters }: Props) => {
         </Text>
       </Group>
       {filters.length > 0 && (
-        <Flex mt="sm" gap="xs" align="center">
-          <Text>Active Filters: </Text>
+        <Flex mt="sm" gap="xs" align="center" wrap="wrap">
+          <Text className="mantine-visible-from-sm">Active Filters: </Text>
           {filters.map((filter, idx) => (
             <Badge
               key={idx}
+              size={badgeSize}
               variant="outline"
               rightSection={
                 <IconX
