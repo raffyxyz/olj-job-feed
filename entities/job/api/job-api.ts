@@ -2,10 +2,7 @@ import { JobType } from "@/shared/types";
 
 export const jobApi = {
   getJobs: async (): Promise<JobType[]> => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/api`,
-      {}
-    );
+    const response = await fetch("/api/jobs");
 
     const data = await response.json();
 

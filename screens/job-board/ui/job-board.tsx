@@ -56,7 +56,7 @@ export const JobBoard = () => {
               <JobCardSkeleton />
             </Grid.Col>
           ))
-        ) : filteredJobs.length === 0 ? (
+        ) : filteredJobs?.length === 0 ? (
           <Grid.Col span={12}>
             <Title order={2} ta="center" c="dimmed" mt={40}>
               No job post available🥹
