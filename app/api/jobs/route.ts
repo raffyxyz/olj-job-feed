@@ -10,7 +10,8 @@ const BASE_URL = "https://www.onlinejobs.ph/jobseekers/jobsearch";
 
 export async function GET(request: NextRequest) {
   if (
-    request.headers.get("Authorization") !== `Bearer ${process.env.API_KEY}`
+    request.headers.get("Authorization") !==
+    `Bearer ${process.env.BEARER_TOKEN}`
   ) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
