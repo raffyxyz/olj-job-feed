@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "../query-keys/query-keys";
-import { fetchJobs } from "../api/fetch-jobs";
+import { jobApi } from "../api/job-api";
 
 export const useJobsQuery = () => {
   return useQuery({
     queryKey: queryKeys.jobs.all(),
-    queryFn: () => fetchJobs(),
+    queryFn: () => jobApi.getJobs(),
     staleTime: 5 * 60 * 1000,
   });
 };
