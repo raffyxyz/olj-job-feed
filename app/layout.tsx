@@ -14,7 +14,7 @@ import { Arimo } from "next/font/google";
 import { QueryProvider } from "./providers/QueryProvider";
 
 export const metadata = {
-  title: "OnlineJobsPh App",
+  title: "OLJ Job Feed",
   description: "Browse jobs easily.",
 };
 
