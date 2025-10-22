@@ -2,6 +2,7 @@
 // All packages except `@mantine/hooks` require styles imports
 import "@mantine/core/styles.css";
 
+import { Analytics } from "@vercel/analytics/next";
 import {
   ColorSchemeScript,
   DEFAULT_THEME,
@@ -48,6 +49,7 @@ export default function RootLayout({
         <QueryProvider>
           <MantineProvider theme={theme}>{children}</MantineProvider>
         </QueryProvider>
+        <Analytics />
       </body>
     </html>
   );
