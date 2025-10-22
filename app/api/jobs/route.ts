@@ -1,8 +1,7 @@
-import { getRandomHeaders } from "@/entities/axios";
+import { getBrowserHeaders } from "@/entities/axios";
 import { checkJobDate, getOnlyTodayJobs, parseJobPosts } from "@/entities/job";
 import { delay } from "@/shared/lib/delay";
 import { JobType } from "@/shared/types";
-import { getAllowedOrigins } from "@/shared/lib/get-allowed-origins";
 
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
@@ -11,8 +10,11 @@ import { corsCheck } from "@/shared/lib/cors-check";
 const BASE_URL = "https://www.onlinejobs.ph/jobseekers/jobsearch";
 
 export async function GET(request: NextRequest) {
-  const { allowed, origin } = corsCheck(request);
+  // Use the client's headers instead of creating a random one.
+  const browserHeaders = getBrowserHeaders(request);
 
+  // Check cors.
+  const { allowed, origin } = corsCheck(request);
   if (!allowed) {
     return NextResponse.json(
       { error: "Access forbidden: Invalid origin" },
@@ -25,12 +27,11 @@ export async function GET(request: NextRequest) {
   const jobs: JobType[] = [];
 
   let proceed = false;
-  const headers = getRandomHeaders();
 
   try {
     do {
       const response = await axios.get(`${BASE_URL}/${START_PAGE}`, {
-        headers,
+        headers: browserHeaders,
       });
 
       if (response.status === 200) {
