@@ -23,46 +23,92 @@ export async function GET(request: NextRequest) {
   }
 
   let START_PAGE = 0;
+  const CONCURRENT_REQUESTS = 3; // Number of pages to fetch concurrently
+  const PAGE_INCREMENT = 30;
 
   const jobs: JobType[] = [];
-
-  let proceed = false;
+  let proceed = true;
 
   try {
-    do {
-      const response = await axios.get(`${BASE_URL}/${START_PAGE}`, {
-        headers: browserHeaders,
-      });
+    while (proceed) {
+      // Create array of page numbers to fetch concurrently
+      const pagesToFetch = Array.from(
+        { length: CONCURRENT_REQUESTS },
+        (_, index) => START_PAGE + index * PAGE_INCREMENT
+      );
 
-      if (response.status === 200) {
-        console.log("Scraping OK!");
+      console.log(`Fetching pages: ${pagesToFetch.join(", ")}`);
+
+      // Make concurrent requests
+      const responses = await Promise.allSettled(
+        pagesToFetch.map((pageNumber) =>
+          axios.get(`${BASE_URL}/${pageNumber}`, {
+            headers: browserHeaders,
+          })
+        )
+      );
+
+      // Process responses
+      let shouldContinue = false;
+      let allPagesOld = true;
+
+      for (let i = 0; i < responses.length; i++) {
+        const response = responses[i];
+
+        if (response.status === "fulfilled") {
+          const axiosResponse = response.value;
+
+          if (axiosResponse.status === 200) {
+            console.log(`Scraping OK for page ${pagesToFetch[i]}!`);
+
+            const jobPosts: JobType[] = parseJobPosts(axiosResponse.data);
+            const jobDate = checkJobDate(jobPosts);
+
+            // All new proceed to the next page.
+            if (jobDate === "all-new") {
+              jobs.push(...jobPosts);
+              shouldContinue = true;
+              allPagesOld = false;
+            }
+            // Had old get only the new job post.
+            else if (jobDate === "had-old") {
+              const newPostingOnly = getOnlyTodayJobs(jobPosts);
+              jobs.push(...newPostingOnly);
+              shouldContinue = true;
+              allPagesOld = false;
+            }
+            // All Old end to process.
+            else if (jobDate === "all-old") {
+              // This page is all old, but we need to check all pages in the batch
+            }
+          } else {
+            console.log(
+              `Error for page ${pagesToFetch[i]}:`,
+              axiosResponse.status
+            );
+            console.log(axiosResponse.data);
+            allPagesOld = false; // Treat errors as non-old to continue
+          }
+        } else {
+          console.error(
+            `Failed to fetch page ${pagesToFetch[i]}:`,
+            response.reason
+          );
+          allPagesOld = false; // Treat errors as non-old to continue
+        }
+      }
+
+      // Only stop if ALL pages in the batch are old (matching original behavior)
+      if (allPagesOld && !shouldContinue) {
+        proceed = false;
+      } else if (shouldContinue) {
+        START_PAGE += CONCURRENT_REQUESTS * PAGE_INCREMENT;
+        // Add delay between batches to avoid rate limiting
+        await delay(1000);
       } else {
-        console.log("Error: ", response.status);
-        console.log(response.data);
+        proceed = false;
       }
-
-      const jobPosts: JobType[] = parseJobPosts(response.data);
-
-      const jobDate = checkJobDate(jobPosts);
-
-      // All new proceed to the next page.
-      if (jobDate === "all-new") {
-        jobs.push(...jobPosts);
-        START_PAGE += 30;
-        proceed = true;
-      }
-      // Had old get only the new job post.
-      if (jobDate === "had-old") {
-        const newPostingOnly = getOnlyTodayJobs(jobPosts);
-        jobs.push(...newPostingOnly);
-        START_PAGE += 30;
-        proceed = true;
-      }
-      // All Old end to process.
-      if (jobDate === "all-old") proceed = false;
-
-      await delay(1000);
-    } while (proceed);
+    }
 
     return NextResponse.json({
       status: 200,
