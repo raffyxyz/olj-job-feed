@@ -4,6 +4,7 @@ import { Anchor, Badge, Button, Card, Flex, Stack, Text } from "@mantine/core";
 import {
   IconBriefcase,
   IconBuilding,
+  IconCalendar,
   IconExternalLink,
 } from "@tabler/icons-react";
 
@@ -14,6 +15,7 @@ type Props = {
   salary: string | number;
   tags: string[];
   url: string | undefined;
+  postedDate: string;
 };
 
 export const JobCard = ({
@@ -23,6 +25,7 @@ export const JobCard = ({
   salary,
   tags,
   url,
+  postedDate,
 }: Props) => {
   function tagIsEmpty(tags: string[]) {
     return tags.length === 1 && tags[0] === "";
@@ -31,7 +34,7 @@ export const JobCard = ({
     <Card shadow="sm" padding="lg" radius="md" h="auto" withBorder>
       <Stack align="stretch" justify="center" gap="md">
         <div>
-          <Text fw={600} size="lg">
+          <Text mb="xs" fw={600} size="lg">
             {title}
           </Text>
           <Flex gap={4} align="center">
@@ -41,6 +44,10 @@ export const JobCard = ({
           <Flex gap={4} align="center">
             <IconBriefcase size={16} />
             <Text size="sm">{employmentType}</Text>
+          </Flex>
+          <Flex gap={4} align="center">
+            <IconCalendar size={16} />
+            <Text size="sm">{postedDate}</Text>
           </Flex>
         </div>
         <Text>{salary}</Text>
