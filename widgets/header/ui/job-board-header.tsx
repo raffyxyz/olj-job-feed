@@ -9,9 +9,23 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { IconMenu2, IconMoonStars, IconSun } from "@tabler/icons-react";
+import {
+  IconInfoCircle,
+  IconLock,
+  IconMenu2,
+  IconMoonStars,
+  IconSun,
+} from "@tabler/icons-react";
 
-export const JobBoardHeader = () => {
+interface JobHeaderProps {
+  onAboutClick: () => void;
+  onPrivPolClick: () => void;
+}
+
+export const JobBoardHeader: React.FC<JobHeaderProps> = ({
+  onAboutClick,
+  onPrivPolClick,
+}) => {
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
@@ -38,14 +52,26 @@ export const JobBoardHeader = () => {
           <Menu.Item
             leftSection={
               colorScheme === "light" ? (
-                <IconMoonStars size={14} />
+                <IconMoonStars size={16} />
               ) : (
-                <IconSun size={14} />
+                <IconSun size={16} />
               )
             }
             onClick={toggleColorScheme}
           >
             {colorScheme === "light" ? "Dark Mode" : "Light Mode"}
+          </Menu.Item>
+          <Menu.Item
+            onClick={onAboutClick}
+            leftSection={<IconInfoCircle size={16} />}
+          >
+            About
+          </Menu.Item>
+          <Menu.Item
+            onClick={onPrivPolClick}
+            leftSection={<IconLock size={16} />}
+          >
+            Privacy Policy
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
