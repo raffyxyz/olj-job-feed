@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@mantine/core": "^8.2.1",
+    "@mantine/dates": "^8.3.6",
     "@mantine/hooks": "^8.2.1",
     "@next/env": "^15.5.6",
     "@opentelemetry/api": "^1.9.0",
@@ -21,6 +22,7 @@
     "@vercel/analytics": "^1.5.0",
     "axios": "^1.12.2",
     "cheerio": "^1.1.0",
+    "dayjs": "^1.11.19",
     "next": "15.4.4",
     "react": "19.1.0",
     "react-dom": "19.1.0",
