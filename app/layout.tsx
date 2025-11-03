@@ -1,7 +1,9 @@
 // Import styles of packages that you've installed.
 // All packages except `@mantine/hooks` require styles imports
 import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
 
+import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import {
   ColorSchemeScript,
@@ -13,7 +15,7 @@ import {
 import { Arimo } from "next/font/google";
 import { QueryProvider } from "./providers/QueryProvider";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "OLJ Job Feed",
   description: "Browse jobs easily.",
 };
