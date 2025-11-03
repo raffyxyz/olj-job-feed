@@ -10,12 +10,16 @@ type Props = {
   total: number;
   filters: string[];
   setFiltersAction: (filters: string[]) => void;
+  dateFilter: string | null;
+  setDateFilterAction: (dateFilter: string | null) => void;
 };
 
 export const JobFiltersPanel = ({
   total,
   filters,
   setFiltersAction,
+  dateFilter,
+  setDateFilterAction,
 }: Props) => {
   const removeFilter = (filterToRemove: string) => {
     setFiltersAction(filters.filter((f) => f !== filterToRemove));
@@ -31,7 +35,10 @@ export const JobFiltersPanel = ({
     <>
       <Group justify="space-between" mt={40} align="end">
         <Flex align="end" gap={{ base: "sm", md: "md" }} wrap="wrap">
-          <DateFilter />
+          <DateFilter
+            dateFilter={dateFilter}
+            setDateFilter={setDateFilterAction}
+          />
           <JobTitleFilter filters={filters} setFilters={setFiltersAction} />
           <RefreshJobsButton />
         </Flex>
