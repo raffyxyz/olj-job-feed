@@ -60,7 +60,7 @@ export const JobBoard = () => {
         <JobFiltersPanel
           total={filteredJobs?.length}
           filters={filters}
-          setFilters={setFilters}
+          setFiltersAction={setFilters}
         />
         <Grid mt={30}>
           {isLoading ? (
