@@ -12,7 +12,7 @@ import {
   createTheme,
   mantineHtmlProps,
 } from "@mantine/core";
-import { Arimo } from "next/font/google";
+import { Manrope } from "next/font/google";
 import { QueryProvider } from "./providers/QueryProvider";
 
 export const metadata: Metadata = {
@@ -20,20 +20,20 @@ export const metadata: Metadata = {
   description: "Browse jobs easily.",
 };
 
-const arimo = Arimo({
+const arimo = Manrope({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"], // Specify the weights you need
-  style: ["normal", "italic"],
+  style: ["normal"],
   display: "swap", // Font display strategy
-  variable: "--font-arimo", // CSS variable name
+  variable: "--font-manrope", // CSS variable name
 });
 
 const theme = createTheme({
-  fontFamily: `var(--font-arimo), ${DEFAULT_THEME.fontFamily}`,
+  fontFamily: `var(--font-manrope), ${DEFAULT_THEME.fontFamily}`,
   fontFamilyMonospace: "Monaco, Courier, monospace",
   headings: {
     // Use default theme if you want to provide default Mantine fonts as a fallback
-    fontFamily: `var(--font-arimo), ${DEFAULT_THEME.fontFamily}`,
+    fontFamily: `var(--font-manrope), ${DEFAULT_THEME.fontFamily}`,
   },
 });
 
