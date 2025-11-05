@@ -16,6 +16,10 @@ export const JobBoard = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const [dateFilter, setDateFilter] = useState<string | null>(
+    searchParams.get("date-filter"),
+  );
   const [filters, setFilters] = useState<string[]>(() => {
     return searchParams.getAll("filter");
   });
@@ -27,12 +31,24 @@ export const JobBoard = () => {
   const [privpolOpened, { open: openPrivPol, close: closePrivPol }] =
     useDisclosure(false);
 
-  const { data, isLoading } = useJobsQuery();
+  const { data, isLoading } = useJobsQuery(dateFilter || "");
 
   const filteredJobs = useMemo(
     () => FilterByTitle(data!, filters),
-    [filters, data],
+    [filters, data, dateFilter],
   );
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+
+    params.delete("date-filter");
+
+    if (dateFilter) params.append("date-filter", dateFilter);
+
+    const query = params.toString();
+
+    router.replace(`${pathname}${query ? `?${query}` : ""}`, { scroll: false });
+  }, [dateFilter, pathname, router, searchParams]);
 
   // Sync filters to URL whenever they change
   useEffect(() => {
@@ -60,7 +76,9 @@ export const JobBoard = () => {
         <JobFiltersPanel
           total={filteredJobs?.length}
           filters={filters}
-          setFilters={setFilters}
+          setFiltersAction={setFilters}
+          dateFilter={dateFilter}
+          setDateFilterAction={setDateFilter}
         />
         <Grid mt={30}>
           {isLoading ? (

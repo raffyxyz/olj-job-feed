@@ -1,5 +1,6 @@
 "use client";
 
+import { DateFilter } from "@/features/date-filter";
 import { JobTitleFilter } from "@/features/job-title-filter";
 import { RefreshJobsButton } from "@/features/refresh-jobs";
 import { Badge, Button, Flex, Group, Text, useMatches } from "@mantine/core";
@@ -8,12 +9,20 @@ import { IconX } from "@tabler/icons-react";
 type Props = {
   total: number;
   filters: string[];
-  setFilters: (filters: string[]) => void;
+  setFiltersAction: (filters: string[]) => void;
+  dateFilter: string | null;
+  setDateFilterAction: (dateFilter: string | null) => void;
 };
 
-export const JobFiltersPanel = ({ total, filters, setFilters }: Props) => {
+export const JobFiltersPanel = ({
+  total,
+  filters,
+  setFiltersAction,
+  dateFilter,
+  setDateFilterAction,
+}: Props) => {
   const removeFilter = (filterToRemove: string) => {
-    setFilters(filters.filter((f) => f !== filterToRemove));
+    setFiltersAction(filters.filter((f) => f !== filterToRemove));
   };
 
   const badgeSize = useMatches({
@@ -25,8 +34,12 @@ export const JobFiltersPanel = ({ total, filters, setFilters }: Props) => {
   return (
     <>
       <Group justify="space-between" mt={40} align="end">
-        <Flex align="end" gap="md">
-          <JobTitleFilter filters={filters} setFilters={setFilters} />
+        <Flex align="end" gap={{ base: "sm", md: "md" }} wrap="wrap">
+          <DateFilter
+            dateFilter={dateFilter}
+            setDateFilter={setDateFilterAction}
+          />
+          <JobTitleFilter filters={filters} setFilters={setFiltersAction} />
           <RefreshJobsButton />
         </Flex>
         <Text size="sm" c="dimmed">
@@ -55,7 +68,7 @@ export const JobFiltersPanel = ({ total, filters, setFilters }: Props) => {
           <Button
             variant="transparent"
             color="red"
-            onClick={() => setFilters([])}
+            onClick={() => setFiltersAction([])}
           >
             Clear All
           </Button>
