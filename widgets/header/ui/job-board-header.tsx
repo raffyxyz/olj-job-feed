@@ -31,7 +31,7 @@ export const JobBoardHeader: React.FC<JobHeaderProps> = ({
 
   return (
     <Group justify="space-between">
-      <Title order={isMobile ? 4 : 1}>Browse Job Posting Today</Title>
+      <Title order={isMobile ? 4 : 1}>Browse Job Posting</Title>
       <Menu
         width={200}
         shadow="md"
