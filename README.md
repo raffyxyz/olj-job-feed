@@ -2,6 +2,8 @@
 
 An onlinejobs.ph web app that scrapes job posting on the job board.
 
+# <b>Onlinejobs.ph</b> updated their website it can now search job title unlike before, so this project is no longer needed.
+
 ## What does this web app do?
 
 It scrapes all available job posting from onlinejobs.ph within the day, it eliminates manually navigating the job board for jobs.
